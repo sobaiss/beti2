@@ -102,7 +102,7 @@ export default function Header() {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/my-ads" className="flex items-center cursor-pointer">
+                    <Link href="/mes-annonces" className="flex items-center cursor-pointer">
                       <FileText className="mr-2 h-4 w-4" />
                       <span>Mes annonces</span>
                     </Link>
@@ -371,7 +371,7 @@ export default function Header() {
                       <Settings className="w-4 h-4 mr-2" />
                       Mon compte
                     </Link>
-                    <Link href="/my-ads" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
+                    <Link href="/mes-annonces" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
                       <FileText className="w-4 h-4 mr-2" />
                       Mes annonces
                     </Link>
