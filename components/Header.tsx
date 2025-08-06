@@ -367,7 +367,6 @@ export default function Header() {
                     <div className="text-sm text-gray-700 px-3 py-2">
                       Bonjour, {session.user.firstName}
                     </div>
-                    <Link href="/account" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
                     <Link href="/mon-compte" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
                       <Settings className="w-4 h-4 mr-2" />
                       Mon compte
