@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { Menu, X, Heart, User, Phone, ChevronDown, Home, MapPin, Building, Building2, Briefcase, Wheat } from 'lucide-react';
+import { Menu, X, Heart, User, Phone, ChevronDown, Home, MapPin, Building, Building2, Briefcase, Wheat, Settings, FileText, Search, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -64,19 +65,70 @@ export default function Header() {
             </Button>
             
             {session?.user ? (
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-700">
-                  Bonjour, {session.user.firstName}
-                </span>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={handleSignOut}
-                  className="text-gray-700 hover:text-blue-900"
-                >
-                  Déconnexion
-                </Button>
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="relative h-10 w-10 rounded-full bg-blue-100 hover:bg-blue-200">
+                    <div className="flex items-center justify-center w-full h-full">
+                      {session.user.avatar ? (
+                        <img 
+                          src={session.user.avatar} 
+                          alt={`${session.user.firstName} ${session.user.lastName}`}
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-blue-900 font-semibold text-sm">
+                          {session.user.firstName?.[0]}{session.user.lastName?.[0]}
+                        </span>
+                      )}
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <div className="flex items-center justify-start gap-2 p-2">
+                    <div className="flex flex-col space-y-1 leading-none">
+                      <p className="font-medium text-sm text-gray-900">
+                        {session.user.firstName} {session.user.lastName}
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        {session.user.email}
+                      </p>
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/account" className="flex items-center cursor-pointer">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Mon compte</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/my-ads" className="flex items-center cursor-pointer">
+                      <FileText className="mr-2 h-4 w-4" />
+                      <span>Mes annonces</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/favorites" className="flex items-center cursor-pointer">
+                      <Heart className="mr-2 h-4 w-4" />
+                      <span>Mes favoris</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/saved-searches" className="flex items-center cursor-pointer">
+                      <Search className="mr-2 h-4 w-4" />
+                      <span>Mes recherches sauvegardées</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
+                    className="flex items-center cursor-pointer text-red-600 focus:text-red-600"
+                    onClick={handleSignOut}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Déconnexion</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Button asChild size="sm" className="bg-blue-900 hover:bg-blue-800">
                 <Link href="/auth/signin">
@@ -315,13 +367,30 @@ export default function Header() {
                     <div className="text-sm text-gray-700 px-3 py-2">
                       Bonjour, {session.user.firstName}
                     </div>
+                    <Link href="/account" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
+                      <Settings className="w-4 h-4 mr-2" />
+                      Mon compte
+                    </Link>
+                    <Link href="/my-ads" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
+                      <FileText className="w-4 h-4 mr-2" />
+                      Mes annonces
+                    </Link>
+                    <Link href="/favorites" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
+                      <Heart className="w-4 h-4 mr-2" />
+                      Mes favoris
+                    </Link>
+                    <Link href="/saved-searches" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
+                      <Search className="w-4 h-4 mr-2" />
+                      Mes recherches sauvegardées
+                    </Link>
                     <Button 
                       variant="outline" 
                       size="sm" 
                       onClick={handleSignOut}
-                      className="w-full justify-start"
+                      className="w-full justify-start text-red-600 hover:text-red-600"
                     >
-                      Déconnexion
+                      <LogOut className="w-4 h-4 mr-2" />
+                      <span>Déconnexion</span>
                     </Button>
                   </div>
                 ) : (
