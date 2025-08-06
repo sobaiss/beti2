@@ -128,6 +128,50 @@ export default function MonComptePage() {
     loadUserData();
   }, [session?.user?.id]);
 
+  // Load user data
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (!session?.user?.id) return;
+
+      try {
+        setLoading(true);
+        
+        // Load user info
+        const userResponse = await fetch(`/api/users/${session.user.id}`);
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          setPersonalInfo({
+            firstName: userData.firstName || '',
+            lastName: userData.lastName || '',
+            email: userData.email || '',
+            phone: userData.phone || '',
+            avatar: userData.avatar || '',
+            acceptMarketing: userData.acceptMarketing || false
+          });
+        }
+
+        // Load user settings
+        const settingsResponse = await fetch(`/api/users/${session.user.id}/settings`);
+        if (settingsResponse.ok) {
+          const settingsData = await settingsResponse.json();
+          setPrivacySettings({
+            acceptEmailContact: settingsData.acceptEmailContact ?? true,
+            acceptPhoneContact: settingsData.acceptPhoneContact ?? true,
+            displayEmail: settingsData.displayEmail ?? false,
+            displayPhone: settingsData.displayPhone ?? false
+          });
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+        setErrors(prev => ({ ...prev, personal: 'Erreur lors du chargement des données' }));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUserData();
+  }, [session?.user?.id]);
+
   // Handle personal info update
   const handlePersonalInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
