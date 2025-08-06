@@ -96,7 +96,7 @@ export default function Header() {
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/account" className="flex items-center cursor-pointer">
+                    <Link href="/mon-compte" className="flex items-center cursor-pointer">
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Mon compte</span>
                     </Link>
@@ -368,6 +368,7 @@ export default function Header() {
                       Bonjour, {session.user.firstName}
                     </div>
                     <Link href="/account" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
+                    <Link href="/mon-compte" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900">
                       <Settings className="w-4 h-4 mr-2" />
                       Mon compte
                     </Link>
