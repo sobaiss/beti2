@@ -56,7 +56,7 @@ export default function Header() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <Button asChild variant="outline" size="sm" className="text-blue-900 border-blue-900 hover:bg-blue-50">
-              <Link href="/deposit-listing">
+              <Link href="/deposer-une-annonce">
                 Déposer une annonce
               </Link>
             </Button>

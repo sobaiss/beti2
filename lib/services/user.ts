@@ -48,31 +48,31 @@ export class UserService {
           }
         }
       },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        phone: true,
-        userType: true,
-        avatar: true,
-        status: true,
-        validatedAt: true,
-        verifiedAt: true,
-        lockedAt: true,
-        acceptMarketing: true,
-        settings: true,
-        rights: true,
-        createdAt: true,
-        updatedAt: true,
-        _count: {
-          select: {
-            properties: true,
-            favoriteProperties: true,
-            savedSearches: true
-          }
-        }
-      }
+      // select: {
+      //   id: true,
+      //   email: true,
+      //   firstName: true,
+      //   lastName: true,
+      //   phone: true,
+      //   userType: true,
+      //   avatar: true,
+      //   status: true,
+      //   validatedAt: true,
+      //   verifiedAt: true,
+      //   lockedAt: true,
+      //   acceptMarketing: true,
+      //   settings: true,
+      //   rights: true,
+      //   createdAt: true,
+      //   updatedAt: true,
+      //   _count: {
+      //     select: {
+      //       properties: true,
+      //       favoriteProperties: true,
+      //       savedSearches: true
+      //     }
+      //   }
+      // }
     })
   }
 

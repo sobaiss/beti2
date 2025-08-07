@@ -173,7 +173,7 @@ export default function MesAnnoncesPage() {
             </p>
           </div>
           <Button asChild className="mt-4 sm:mt-0 bg-blue-900 hover:bg-blue-800">
-            <Link href="/deposit-listing">
+            <Link href="/deposer-une-annonce">
               <Plus className="w-4 h-4 mr-2" />
               Nouvelle Annonce
             </Link>
@@ -199,7 +199,7 @@ export default function MesAnnoncesPage() {
                 <p>Vous n'avez pas encore créé d'annonce.</p>
               </div>
               <Button asChild className="bg-blue-900 hover:bg-blue-800">
-                <Link href="/deposit-listing">
+                <Link href="/deposer-une-annonce">
                   <Plus className="w-4 h-4 mr-2" />
                   Créer ma première annonce
                 </Link>
