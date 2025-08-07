@@ -525,84 +525,101 @@ export default function DepositListingPage() {
         </div>
 
         {/* Progress Steps */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              {steps.map((step, index) => {
-                const Icon = step.icon;
-                const isActive = currentStep === step.id;
-                const isCompleted = currentStep > step.id;
-                
-                return (
-                  <div key={step.id} className="flex items-center">
-                    <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
-                      isCompleted 
-                        ? 'bg-green-500 border-green-500 text-white' 
-                        : isActive 
-                          ? 'bg-blue-500 border-blue-500 text-white' 
-                          : 'border-gray-300 text-gray-400'
-                    }`}>
-                      {isCompleted ? (
-                        <Check className="w-5 h-5" />
-                      ) : (
-                        <Icon className="w-5 h-5" />
-                      )}
-                    </div>
-                    <div className="ml-3 hidden sm:block">
-                      <div className={`text-sm font-medium ${
-                        isActive ? 'text-blue-900' : isCompleted ? 'text-green-700' : 'text-gray-500'
-                      }`}>
-                        {step.title}
+        {/* Main Content with Sidebar */}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar - Progress Steps */}
+          <div className="lg:w-80 flex-shrink-0">
+            <Card className="sticky top-24">
+              <CardHeader>
+                <CardTitle className="text-lg">Étapes</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 pt-0">
+                <div className="space-y-4">
+                  {steps.map((step, index) => {
+                    const Icon = step.icon;
+                    const isActive = currentStep === step.id;
+                    const isCompleted = currentStep > step.id;
+                    
+                    return (
+                      <div key={step.id} className="flex items-center">
+                        <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 flex-shrink-0 ${
+                          isCompleted 
+                            ? 'bg-green-500 border-green-500 text-white' 
+                            : isActive 
+                              ? 'bg-blue-500 border-blue-500 text-white' 
+                              : 'border-gray-300 text-gray-400'
+                        }`}>
+                          {isCompleted ? (
+                            <Check className="w-5 h-5" />
+                          ) : (
+                            <Icon className="w-5 h-5" />
+                          )}
+                        </div>
+                        <div className="ml-4 flex-1">
+                          <div className={`text-sm font-medium ${
+                            isActive ? 'text-blue-900' : isCompleted ? 'text-green-700' : 'text-gray-500'
+                          }`}>
+                            Étape {step.id}
+                          </div>
+                          <div className={`text-sm ${
+                            isActive ? 'text-blue-700' : isCompleted ? 'text-green-600' : 'text-gray-400'
+                          }`}>
+                            {step.title}
+                          </div>
+                        </div>
+                        {index < steps.length - 1 && (
+                          <div className={`absolute left-[1.25rem] mt-12 w-0.5 h-8 ${
+                            isCompleted ? 'bg-green-500' : 'bg-gray-300'
+                          }`} style={{ top: `${(index + 1) * 4.5}rem` }} />
+                        )}
                       </div>
-                    </div>
-                    {index < steps.length - 1 && (
-                      <div className={`hidden sm:block w-12 h-0.5 ml-4 ${
-                        isCompleted ? 'bg-green-500' : 'bg-gray-300'
-                      }`} />
-                    )}
-                  </div>
-                );
-              })}
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1">
+            {/* Step Content */}
+            <Card className="mb-8">
+              <CardContent className="p-8">
+                {renderStepContent()}
+              </CardContent>
+            </Card>
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-between">
+              <Button
+                variant="outline"
+                onClick={prevStep}
+                disabled={currentStep === 1}
+                className="px-8"
+              >
+                Précédent
+              </Button>
+              
+              {currentStep === steps.length ? (
+                <Button className="px-8 bg-green-600 hover:bg-green-700">
+                  Publier l'annonce
+                </Button>
+              ) : (
+                <Button
+                  onClick={nextStep}
+                  disabled={
+                    (currentStep === 1 && (!propertyType || !transactionType)) ||
+                    (currentStep === 2 && (!formData.address || !formData.postalCode || !formData.city)) ||
+                    (currentStep === 4 && !formData.price) ||
+                    (currentStep === 6 && (!formData.contactName || !formData.contactEmail || !formData.contactPhone))
+                  }
+                  className="px-8 bg-blue-900 hover:bg-blue-800"
+                >
+                  Suivant
+                </Button>
+              )}
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Step Content */}
-        <Card className="mb-8">
-          <CardContent className="p-8">
-            {renderStepContent()}
-          </CardContent>
-        </Card>
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={prevStep}
-            disabled={currentStep === 1}
-            className="px-8"
-          >
-            Précédent
-          </Button>
-          
-          {currentStep === steps.length ? (
-            <Button className="px-8 bg-green-600 hover:bg-green-700">
-              Publier l'annonce
-            </Button>
-          ) : (
-            <Button
-              onClick={nextStep}
-              disabled={
-                (currentStep === 1 && (!propertyType || !transactionType)) ||
-                (currentStep === 2 && (!formData.address || !formData.postalCode || !formData.city)) ||
-                (currentStep === 4 && !formData.price) ||
-                (currentStep === 6 && (!formData.contactName || !formData.contactEmail || !formData.contactPhone))
-              }
-              className="px-8 bg-blue-900 hover:bg-blue-800"
-            >
-              Suivant
-            </Button>
-          )}
+          </div>
         </div>
       </div>
     </div>
