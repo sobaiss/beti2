@@ -98,9 +98,9 @@ export default function DepositListingPage() {
                 <Label className="text-base font-medium text-gray-900 mb-4 block">Type de transaction</Label>
                 <div className="grid grid-cols-2 gap-4">
                   <button
-                    onClick={() => setTransactionType('sell')}
+                    onClick={() => setTransactionType('achat')}
                     className={`p-6 border-2 rounded-lg text-left transition-all ${
-                      transactionType === 'sell' 
+                      transactionType === 'achat' 
                         ? 'border-blue-500 bg-blue-50' 
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
@@ -338,7 +338,7 @@ export default function DepositListingPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Quel est le prix de votre bien ?</h2>
               <p className="text-gray-600 mb-6">
-                {transactionType === 'sell' 
+                {transactionType === 'achat' 
                   ? 'Indiquez le prix de vente souhaité' 
                   : 'Indiquez le loyer mensuel souhaité'
                 }
@@ -348,13 +348,13 @@ export default function DepositListingPage() {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="price" className="text-lg font-medium">
-                  {transactionType === 'sell' ? 'Prix de vente' : 'Loyer mensuel'}
+                  {transactionType === 'achat' ? 'Prix de vente' : 'Loyer mensuel'}
                 </Label>
                 <div className="relative mt-2">
                   <Input
                     id="price"
                     type="number"
-                    placeholder={transactionType === 'sell' ? '450000' : '1200'}
+                    placeholder={transactionType === 'achat' ? '450000' : '1200'}
                     value={formData.price}
                     onChange={(e) => handleInputChange('price', e.target.value)}
                     className="text-xl py-4 pr-12"
@@ -386,7 +386,7 @@ export default function DepositListingPage() {
                 <p className="text-sm text-gray-600">
                   Basée sur les biens similaires dans votre secteur, nous estimons votre bien entre{' '}
                   <span className="font-medium text-blue-900">
-                    {transactionType === 'sell' ? '420 000€ et 480 000€' : '1 100€ et 1 400€/mois'}
+                    {transactionType === 'achat' ? '420 000€ et 480 000€' : '1 100€ et 1 400€/mois'}
                   </span>
                 </p>
               </div>
