@@ -11,6 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import Header from '@/components/Header';
 
@@ -20,6 +23,8 @@ export default function DepositListingPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [propertyType, setPropertyType] = useState('');
   const [transactionType, setTransactionType] = useState('');
+  const [openCity, setOpenCity] = useState(false);
+  const [openLocation, setOpenLocation] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -49,6 +54,49 @@ export default function DepositListingPage() {
     isAgent: false
   });
 
+  // Sample data for cities and locations in Chad
+  const cities = [
+    'N\'Djamena',
+    'Moundou',
+    'Sarh',
+    'Abéché',
+    'Kelo',
+    'Koumra',
+    'Pala',
+    'Am Timan',
+    'Bongor',
+    'Mongo',
+    'Doba',
+    'Ati',
+    'Laï',
+    'Biltine',
+    'Moïssala'
+  ];
+
+  const locations = [
+    // N'Djamena neighborhoods
+    'Chagoua',
+    'Moursal',
+    'Farcha',
+    'Klemat',
+    'Diguel',
+    'Kabalaye',
+    'Gassi',
+    'Ridina',
+    'Madjorio',
+    'Gardolé',
+    'Amriguébé',
+    'Walia',
+    'Sabangali',
+    'Dembé',
+    'Goudji',
+    // Other areas
+    'Centre-ville',
+    'Zone industrielle',
+    'Zone résidentielle',
+    'Quartier administratif',
+    'Zone commerciale'
+  ];
   // Redirect if not authenticated
   useEffect(() => {
     if (status === 'loading') return;
@@ -181,24 +229,94 @@ export default function DepositListingPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="city">Ville</Label>
-                  <Input
-                    id="city"
-                    placeholder="Paris"
-                    value={formData.city}
-                    onChange={(e) => handleInputChange('city', e.target.value)}
-                  />
+                  <Label>Ville</Label>
+                  <Popover open={openCity} onOpenChange={setOpenCity}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={openCity}
+                        className="w-full justify-between"
+                      >
+                        {formData.city || "Sélectionner une ville..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command>
+                        <CommandInput placeholder="Rechercher une ville..." />
+                        <CommandList>
+                          <CommandEmpty>Aucune ville trouvée.</CommandEmpty>
+                          <CommandGroup>
+                            {cities.map((city) => (
+                              <CommandItem
+                                key={city}
+                                value={city}
+                                onSelect={(currentValue) => {
+                                  handleInputChange('city', currentValue === formData.city ? '' : currentValue);
+                                  setOpenCity(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    formData.city === city ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {city}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="location">Quartier / Secteur (optionnel)</Label>
-                <Input
-                  id="location"
-                  placeholder="Marais, Centre-ville..."
-                  value={formData.location}
-                  onChange={(e) => handleInputChange('location', e.target.value)}
-                />
+                <Label>Quartier / Secteur (optionnel)</Label>
+                <Popover open={openLocation} onOpenChange={setOpenLocation}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={openLocation}
+                      className="w-full justify-between"
+                    >
+                      {formData.location || "Sélectionner un quartier..."}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0">
+                    <Command>
+                      <CommandInput placeholder="Rechercher un quartier..." />
+                      <CommandList>
+                        <CommandEmpty>Aucun quartier trouvé.</CommandEmpty>
+                        <CommandGroup>
+                          {locations.map((location) => (
+                            <CommandItem
+                              key={location}
+                              value={location}
+                              onSelect={(currentValue) => {
+                                handleInputChange('location', currentValue === formData.location ? '' : currentValue);
+                                setOpenLocation(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  formData.location === location ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {location}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
           </div>
