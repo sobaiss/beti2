@@ -156,7 +156,7 @@ export default function Home() {
             <Button variant="outline" size="lg" className="px-8">
               <Link href="/properties" className="flex items-center">
                 Voir Tous les Biens
-                <TrendingUpIcon className="ml-2 h-5 w-5" />
+                
               </Link>
             </Button>
           </div>
