@@ -3,16 +3,25 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Upload, MapPin, Home, Euro, Camera, FileText, Check, ChevronsUpDown } from 'lucide-react';
+import { 
+  ArrowLeftIcon, 
+  CloudArrowUpIcon, 
+  MapPinIcon, 
+  HomeIcon, 
+  CurrencyEuroIcon, 
+  CameraIcon, 
+  DocumentTextIcon, 
+  CheckIcon, 
+  ChevronUpDownIcon 
+} from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { SearchableCombobox } from '@/components/ui/combobox';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { City } from '@/types/location';
@@ -23,8 +32,6 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [propertyType, setPropertyType] = useState('');
   const [transactionType, setTransactionType] = useState('');
-  const [openCity, setOpenCity] = useState(false);
-  const [openLocation, setOpenLocation] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -89,12 +96,12 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
   }, [session, status, router]);
 
   const steps = [
-    { id: 1, title: 'Type de bien', icon: Home },
-    { id: 2, title: 'Localisation', icon: MapPin },
-    { id: 3, title: 'Caractéristiques', icon: FileText },
-    { id: 4, title: 'Prix', icon: Euro },
-    { id: 5, title: 'Photos', icon: Camera },
-    { id: 6, title: 'Contact', icon: Check }
+    { id: 1, title: 'Type de bien', icon: HomeIcon },
+    { id: 2, title: 'Localisation', icon: MapPinIcon },
+    { id: 3, title: 'Caractéristiques', icon: DocumentTextIcon },
+    { id: 4, title: 'Prix', icon: CurrencyEuroIcon },
+    { id: 5, title: 'Photos', icon: CameraIcon },
+    { id: 6, title: 'Contact', icon: CheckIcon }
   ];
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -112,6 +119,17 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
       setCurrentStep(currentStep - 1);
     }
   };
+
+  // Convert cities to combobox options
+  const cityOptions = cities.map(city => ({
+    value: city.name,
+    label: city.name
+  }));
+
+  const locationOptions = locations.map(location => ({
+    value: location,
+    label: location
+  }));
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -212,93 +230,25 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
                 </div>
                 <div>
                   <Label>Ville</Label>
-                  <Popover open={openCity} onOpenChange={setOpenCity}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={openCity}
-                        className="w-full justify-between"
-                      >
-                        {formData.city || "Sélectionner une ville..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command>
-                        <CommandInput placeholder="Rechercher une ville..." />
-                        <CommandList>
-                          <CommandEmpty>Aucune ville trouvée.</CommandEmpty>
-                          <CommandGroup>
-                            {cities.map((city) => (
-                              <CommandItem
-                                key={city.sk}
-                                value={city.name}
-                                onSelect={(currentValue) => {
-                                  handleInputChange('city', currentValue === formData.city ? '' : currentValue);
-                                  setOpenCity(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    formData.city === city.name ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                                {city.name}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <SearchableCombobox
+                    value={formData.city}
+                    onValueChange={(value) => handleInputChange('city', value)}
+                    options={cityOptions}
+                    placeholder="Sélectionner une ville..."
+                    searchPlaceholder="Rechercher une ville..."
+                  />
                 </div>
               </div>
 
               <div>
                 <Label>Quartier / Secteur (optionnel)</Label>
-                <Popover open={openLocation} onOpenChange={setOpenLocation}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={openLocation}
-                      className="w-full justify-between"
-                    >
-                      {formData.location || "Sélectionner un quartier..."}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0">
-                    <Command>
-                      <CommandInput placeholder="Rechercher un quartier..." />
-                      <CommandList>
-                        <CommandEmpty>Aucun quartier trouvé.</CommandEmpty>
-                        <CommandGroup>
-                          {locations.map((location) => (
-                            <CommandItem
-                              key={location}
-                              value={location}
-                              onSelect={(currentValue) => {
-                                handleInputChange('location', currentValue === formData.location ? '' : currentValue);
-                                setOpenLocation(false);
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  formData.location === location ? "opacity-100" : "opacity-0"
-                                )}
-                              />
-                              {location}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+                <SearchableCombobox
+                  value={formData.location}
+                  onValueChange={(value) => handleInputChange('location', value)}
+                  options={locationOptions}
+                  placeholder="Sélectionner un quartier..."
+                  searchPlaceholder="Rechercher un quartier..."
+                />
               </div>
             </div>
           </div>
@@ -326,52 +276,52 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
                 </div>
                 <div>
                   <Label htmlFor="rooms">Nombre de pièces</Label>
-                  <Select value={formData.rooms} onValueChange={(value) => handleInputChange('rooms', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1 pièce</SelectItem>
-                      <SelectItem value="2">2 pièces</SelectItem>
-                      <SelectItem value="3">3 pièces</SelectItem>
-                      <SelectItem value="4">4 pièces</SelectItem>
-                      <SelectItem value="5">5 pièces</SelectItem>
-                      <SelectItem value="6+">6+ pièces</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Select 
+                    value={formData.rooms} 
+                    onValueChange={(value) => handleInputChange('rooms', value)}
+                    options={[
+                      { value: '1', label: '1 pièce' },
+                      { value: '2', label: '2 pièces' },
+                      { value: '3', label: '3 pièces' },
+                      { value: '4', label: '4 pièces' },
+                      { value: '5', label: '5 pièces' },
+                      { value: '6+', label: '6+ pièces' }
+                    ]}
+                    placeholder="Sélectionner"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="bedrooms">Chambres</Label>
-                  <Select value={formData.bedrooms} onValueChange={(value) => handleInputChange('bedrooms', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0">0 chambre</SelectItem>
-                      <SelectItem value="1">1 chambre</SelectItem>
-                      <SelectItem value="2">2 chambres</SelectItem>
-                      <SelectItem value="3">3 chambres</SelectItem>
-                      <SelectItem value="4">4 chambres</SelectItem>
-                      <SelectItem value="5+">5+ chambres</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Select 
+                    value={formData.bedrooms} 
+                    onValueChange={(value) => handleInputChange('bedrooms', value)}
+                    options={[
+                      { value: '0', label: '0 chambre' },
+                      { value: '1', label: '1 chambre' },
+                      { value: '2', label: '2 chambres' },
+                      { value: '3', label: '3 chambres' },
+                      { value: '4', label: '4 chambres' },
+                      { value: '5+', label: '5+ chambres' }
+                    ]}
+                    placeholder="Sélectionner"
+                  />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="bathrooms">Salles de bain</Label>
-                  <Select value={formData.bathrooms} onValueChange={(value) => handleInputChange('bathrooms', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1 salle de bain</SelectItem>
-                      <SelectItem value="2">2 salles de bain</SelectItem>
-                      <SelectItem value="3">3 salles de bain</SelectItem>
-                      <SelectItem value="4+">4+ salles de bain</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Select 
+                    value={formData.bathrooms} 
+                    onValueChange={(value) => handleInputChange('bathrooms', value)}
+                    options={[
+                      { value: '1', label: '1 salle de bain' },
+                      { value: '2', label: '2 salles de bain' },
+                      { value: '3', label: '3 salles de bain' },
+                      { value: '4+', label: '4+ salles de bain' }
+                    ]}
+                    placeholder="Sélectionner"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="floor">Étage</Label>
@@ -504,7 +454,7 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
 
             <div className="space-y-4">
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
-                <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <CloudArrowUpIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Glissez vos photos ici</h3>
                 <p className="text-gray-600 mb-4">ou cliquez pour sélectionner des fichiers</p>
                 <Button variant="outline">Choisir des photos</Button>
@@ -611,14 +561,13 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
       {/* Header */}
       <div className="mb-8">
         <Link href="/" className="inline-flex items-center text-blue-900 hover:text-blue-800 mb-4">
-          <ArrowLeft className="w-4 h-4 mr-2" />
+          <ArrowLeftIcon className="w-4 h-4 mr-2" />
           Retour à l'accueil
         </Link>
         <h1 className="text-3xl font-bold text-gray-900">Déposer une annonce</h1>
         <p className="text-gray-600 mt-2">Vendez ou louez votre bien rapidement et facilement</p>
       </div>
 
-      {/* Progress Steps */}
       {/* Main Content with Sidebar */}
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Sidebar - Progress Steps */}
@@ -635,7 +584,7 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
                   const isCompleted = currentStep > step.id;
                   
                   return (
-                    <div key={step.id} className="flex items-center">
+                    <div key={step.id} className="flex items-center relative">
                       <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 flex-shrink-0 ${
                         isCompleted 
                           ? 'bg-green-500 border-green-500 text-white' 
@@ -644,7 +593,7 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
                             : 'border-gray-300 text-gray-400'
                       }`}>
                         {isCompleted ? (
-                          <Check className="w-5 h-5" />
+                          <CheckIcon className="w-5 h-5" />
                         ) : (
                           <Icon className="w-5 h-5" />
                         )}
@@ -662,9 +611,9 @@ export default function DeposerUneAnnonceView({cities}: { cities: City[] }) {
                         </div>
                       </div>
                       {index < steps.length - 1 && (
-                        <div className={`absolute left-[1.25rem] mt-12 w-0.5 h-8 ${
+                        <div className={`absolute left-[1.25rem] top-12 w-0.5 h-8 ${
                           isCompleted ? 'bg-green-500' : 'bg-gray-300'
-                        }`} style={{ top: `${(index + 1) * 4.5}rem` }} />
+                        }`} />
                       )}
                     </div>
                   );

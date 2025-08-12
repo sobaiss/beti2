@@ -1,10 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, MapPin, Filter, TrendingUp } from 'lucide-react';
+import { 
+  MagnifyingGlassIcon, 
+  MapPinIcon, 
+  AdjustmentsHorizontalIcon, 
+  TrendingUpIcon 
+} from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -36,6 +41,20 @@ export default function Home() {
     fetchFeaturedProperties();
   }, []);
 
+  const propertyTypeOptions = [
+    { value: '', label: 'Tous types' },
+    { value: 'appartement', label: 'Appartement' },
+    { value: 'maison', label: 'Maison' },
+    { value: 'villa', label: 'Villa' },
+    { value: 'terrain', label: 'Terrain' },
+    { value: 'bureau_commerce', label: 'Bureau/Commerce' }
+  ];
+
+  const transactionTypeOptions = [
+    { value: 'achat', label: 'Acheter' },
+    { value: 'location', label: 'Louer' }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -61,7 +80,7 @@ export default function Home() {
                 <div className="flex-1 space-y-2">
                   <label className="text-sm font-medium text-gray-700">Localisation</label>
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <MapPinIcon className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                     <Input
                       placeholder="Ville, adresse ou code postal"
                       value={searchQuery}
@@ -74,37 +93,29 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Transaction</label>
-                    <Select value={transactionType} onValueChange={setTransactionType}>
-                      <SelectTrigger className="h-12 w-full sm:w-32">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="achat">Acheter</SelectItem>
-                        <SelectItem value="location">Louer</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Select 
+                      value={transactionType} 
+                      onValueChange={setTransactionType}
+                      options={transactionTypeOptions}
+                      className="h-12 w-full sm:w-32"
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Type</label>
-                    <Select value={propertyType} onValueChange={setPropertyType}>
-                      <SelectTrigger className="h-12 w-full sm:w-40">
-                        <SelectValue placeholder="Tous types" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="appartement">Appartement</SelectItem>
-                        <SelectItem value="maison">Maison</SelectItem>
-                        <SelectItem value="villa">Villa</SelectItem>
-                        <SelectItem value="terrain">Terrain</SelectItem>
-                        <SelectItem value="bureau_commerce">Bureau/Commerce</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Select 
+                      value={propertyType} 
+                      onValueChange={setPropertyType}
+                      options={propertyTypeOptions}
+                      placeholder="Tous types"
+                      className="h-12 w-full sm:w-40"
+                    />
                   </div>
                 </div>
 
-                <Button asChild size="lg" className="h-12 px-8 bg-amber-500 hover:bg-amber-600 text-white font-semibold">
-                  <Link href="/search">
-                    <Search className="mr-2 h-5 w-5" />
+                <Button size="lg" className="h-12 px-8 bg-amber-500 hover:bg-amber-600 text-white font-semibold">
+                  <Link href="/search" className="flex items-center">
+                    <MagnifyingGlassIcon className="mr-2 h-5 w-5" />
                     Rechercher
                   </Link>
                 </Button>
@@ -148,10 +159,10 @@ export default function Home() {
           )}
 
           <div className="text-center mt-12">
-            <Button asChild size="lg" variant="outline" className="px-8">
-              <Link href="/properties">
+            <Button variant="outline" size="lg" className="px-8">
+              <Link href="/properties" className="flex items-center">
                 Voir Tous les Biens
-                <TrendingUp className="ml-2 h-5 w-5" />
+                <TrendingUpIcon className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>
@@ -168,10 +179,10 @@ export default function Home() {
             Rejoignez des milliers de clients satisfaits qui ont trouvé leur bien idéal avec nous
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-amber-500 hover:bg-amber-600 px-8">
+            <Button size="lg" className="bg-amber-500 hover:bg-amber-600 px-8">
               <Link href="/properties">Commencer la Recherche</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-900 px-8">
+            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-900 px-8">
               <Link href="/contact">Obtenir de l'Aide</Link>
             </Button>
           </div>

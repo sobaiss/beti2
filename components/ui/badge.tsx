@@ -1,6 +1,7 @@
-import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
+'use client';
 
+import { forwardRef } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
@@ -8,13 +9,10 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
-        secondary:
-          'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        destructive:
-          'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
-        outline: 'text-foreground',
+        default: 'border-transparent bg-blue-600 text-white hover:bg-blue-700',
+        secondary: 'border-transparent bg-gray-100 text-gray-900 hover:bg-gray-200',
+        destructive: 'border-transparent bg-red-600 text-white hover:bg-red-700',
+        outline: 'text-gray-950 border-gray-200',
       },
     },
     defaultVariants: {

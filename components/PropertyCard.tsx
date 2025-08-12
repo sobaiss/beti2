@@ -1,6 +1,6 @@
 'use client';
 
-import { Heart, MapPin, Home, Bed, Bath, Square } from 'lucide-react';
+import { HeartIcon, MapPinIcon, HomeIcon, BedIcon, BathIcon, SquareIcon } from '@heroicons/react/24/outline';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -61,7 +61,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           size="sm"
           className="absolute top-4 right-4 bg-white/90 hover:bg-white border-0 rounded-full p-2"
         >
-          <Heart className="w-4 h-4 text-gray-600" />
+          <HeartIcon className="w-4 h-4 text-gray-600" />
         </Button>
 
         {property.featured && (
@@ -85,35 +85,35 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </h3>
 
           <div className="flex items-center text-gray-600 text-sm">
-            <MapPin className="w-4 h-4 mr-1" />
+            <MapPinIcon className="w-4 h-4 mr-1" />
             <span className="truncate">{property.location}</span>
           </div>
 
           <div className="flex items-center justify-between text-sm text-gray-600">
             <div className="flex items-center space-x-4">
               <div className="flex items-center">
-                <Bed className="w-4 h-4 mr-1" />
+                <BedIcon className="w-4 h-4 mr-1" />
                 <span>{property.bedrooms}</span>
               </div>
               {property.bathrooms && (
                 <div className="flex items-center">
-                  <Bath className="w-4 h-4 mr-1" />
+                  <BathIcon className="w-4 h-4 mr-1" />
                   <span>{property.bathrooms}</span>
                 </div>
               )}
               <div className="flex items-center">
-                <Square className="w-4 h-4 mr-1" />
+                <SquareIcon className="w-4 h-4 mr-1" />
                 <span>{property.area || 0}m²</span>
               </div>
             </div>
           </div>
 
           <div className="flex items-center text-xs text-gray-500">
-            <Home className="w-3 h-3 mr-1" />
+            <HomeIcon className="w-3 h-3 mr-1" />
             <span className="capitalize">{property.type.toLowerCase()}</span>
           </div>
 
-          <Button asChild className="w-full mt-4 bg-blue-900 hover:bg-blue-800">
+          <Button className="w-full mt-4 bg-blue-900 hover:bg-blue-800">
             <Link href={`/property/${property.id}`}>Voir les Détails</Link>
           </Button>
         </div>
