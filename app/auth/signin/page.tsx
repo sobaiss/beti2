@@ -4,7 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn, getSession } from 'next-auth/react';
-import { Eye, EyeOff, Mail, Lock, ArrowLeft } from 'lucide-react';
+import { 
+  EyeIcon, 
+  EyeSlashIcon, 
+  EnvelopeIcon, 
+  LockClosedIcon, 
+  ArrowLeftIcon 
+} from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -62,7 +68,7 @@ export default function SignInPage() {
       <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-6">
           <Link href="/" className="inline-flex items-center text-blue-900 hover:text-blue-800 mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeftIcon className="w-4 h-4 mr-2" />
             Retour à l'accueil
           </Link>
         </div>
@@ -90,7 +96,7 @@ export default function SignInPage() {
                   Adresse Email
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <EnvelopeIcon className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input
                     id="email"
                     type="email"
@@ -108,7 +114,7 @@ export default function SignInPage() {
                   Mot de Passe
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <LockClosedIcon className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
@@ -123,7 +129,7 @@ export default function SignInPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? <EyeSlashIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
                   </button>
                 </div>
               </div>
