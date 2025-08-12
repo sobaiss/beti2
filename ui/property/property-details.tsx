@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { 
-  Heart, 
-  Share2, 
   MapPin, 
   Bed, 
   Bath, 
@@ -12,8 +10,6 @@ import {
   Calendar,
   Phone,
   Mail,
-  ChevronLeft,
-  ChevronRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,7 +22,7 @@ import PropertyImageGallery from '@/components/PropertyImageGallery';
 import { Property } from '@/types/property';
 
 
-export default function PropertyDetails({property}: { property: Property }) {
+export default function PropertyDetailsView({property}: { property: Property }) {
   // Track property view on component mount
   useEffect(() => {
     const trackView = async () => {

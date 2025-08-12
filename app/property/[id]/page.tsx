@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Header from '@/components/Header';
-import PropertyDetails from '@/ui/property/property-details';
+import PropertyDetailsView from '@/ui/property/property-details';
 import { PropertyService } from '@/lib/services/property';
 
 
@@ -28,7 +28,7 @@ export default async function PropertyDetailPage(props: { params: Promise<{ id: 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <PropertyDetails property={property} />
+      <PropertyDetailsView property={property} />
     </div>
   );
 }
