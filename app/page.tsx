@@ -4,12 +4,11 @@ import { useState, useEffect } from 'react';
 import { 
   MagnifyingGlassIcon, 
   MapPinIcon, 
-  AdjustmentsHorizontalIcon, 
   TrendingUpIcon 
 } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -40,20 +39,6 @@ export default function Home() {
 
     fetchFeaturedProperties();
   }, []);
-
-  const propertyTypeOptions = [
-    { value: '', label: 'Tous types' },
-    { value: 'appartement', label: 'Appartement' },
-    { value: 'maison', label: 'Maison' },
-    { value: 'villa', label: 'Villa' },
-    { value: 'terrain', label: 'Terrain' },
-    { value: 'bureau_commerce', label: 'Bureau/Commerce' }
-  ];
-
-  const transactionTypeOptions = [
-    { value: 'achat', label: 'Acheter' },
-    { value: 'location', label: 'Louer' }
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -93,23 +78,32 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Transaction</label>
-                    <Select 
-                      value={transactionType} 
-                      onValueChange={setTransactionType}
-                      options={transactionTypeOptions}
-                      className="h-12 w-full sm:w-32"
-                    />
+                    <Select value={transactionType} onValueChange={setTransactionType}>
+                      <SelectTrigger className="h-12 w-full sm:w-32">
+                        <SelectValue placeholder="Transaction" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="achat">Acheter</SelectItem>
+                        <SelectItem value="location">Louer</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Type</label>
-                    <Select 
-                      value={propertyType} 
-                      onValueChange={setPropertyType}
-                      options={propertyTypeOptions}
-                      placeholder="Tous types"
-                      className="h-12 w-full sm:w-40"
-                    />
+                    <Select value={propertyType} onValueChange={setPropertyType}>
+                      <SelectTrigger className="h-12 w-full sm:w-40">
+                        <SelectValue placeholder="Tous types" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">Tous types</SelectItem>
+                        <SelectItem value="appartement">Appartement</SelectItem>
+                        <SelectItem value="maison">Maison</SelectItem>
+                        <SelectItem value="villa">Villa</SelectItem>
+                        <SelectItem value="terrain">Terrain</SelectItem>
+                        <SelectItem value="bureau_commerce">Bureau/Commerce</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
 
