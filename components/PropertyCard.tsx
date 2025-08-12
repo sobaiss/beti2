@@ -1,6 +1,6 @@
 'use client';
 
-import { HeartIcon, MapPinIcon, HomeIcon, BedIcon, BathIcon, SquareIcon } from '@heroicons/react/24/outline';
+import { HeartIcon, MapPinIcon, HomeIcon, UserIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -92,17 +92,17 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           <div className="flex items-center justify-between text-sm text-gray-600">
             <div className="flex items-center space-x-4">
               <div className="flex items-center">
-                <BedIcon className="w-4 h-4 mr-1" />
+                <UserIcon className="w-4 h-4 mr-1" />
                 <span>{property.bedrooms}</span>
               </div>
               {property.bathrooms && (
                 <div className="flex items-center">
-                  <BathIcon className="w-4 h-4 mr-1" />
+                  <BuildingOfficeIcon className="w-4 h-4 mr-1" />
                   <span>{property.bathrooms}</span>
                 </div>
               )}
               <div className="flex items-center">
-                <SquareIcon className="w-4 h-4 mr-1" />
+                <div className="w-4 h-4 mr-1 border border-gray-400"></div>
                 <span>{property.area || 0}m²</span>
               </div>
             </div>
